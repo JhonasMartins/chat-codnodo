@@ -3,9 +3,10 @@ version: '3'
 services:
   base: &base
     image: chatwoot/chatwoot:latest
-    env_file: .env ## Change this file for customized env variables
+    env_file: .env
     volumes:
       - storage_data:/app/storage
+      - ./lib/chatwoot_app.rb:/app/lib/chatwoot_app.rb:ro
 
   rails:
     <<: *base
@@ -13,7 +14,7 @@ services:
       - postgres
       - redis
     ports:
-      - '127.0.0.1:3000:3000'
+      - '0.0.0.0:3000:3000'
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production
@@ -44,8 +45,7 @@ services:
     environment:
       - POSTGRES_DB=chatwoot
       - POSTGRES_USER=postgres
-      # Please provide your own password.
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD=75d0bc704139891f5e6890ab37b4f3b70d837480b568fbfd643cf171214fa69c
 
   redis:
     image: redis:alpine
