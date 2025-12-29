@@ -1,140 +1,168 @@
-<img src="./.github/screenshots/header.png#gh-light-mode-only" width="100%" alt="Header light mode"/>
-<img src="./.github/screenshots/header-dark.png#gh-dark-mode-only" width="100%" alt="Header dark mode"/>
+# Chatwoot Self-Hosted (Docker) — Stack pronta para produção
 
-___
+Este repositório disponibiliza uma stack completa para rodar o **Chatwoot self-hosted** com Docker, focada em **deploy rápido**, **segurança básica**, **persistência de dados** e **setup simplificado**.
 
-# Chatwoot
-
-The modern customer support platform, an open-source alternative to Intercom, Zendesk, Salesforce Service Cloud etc.
-
-<p>
-  <a href="https://codeclimate.com/github/chatwoot/chatwoot/maintainability"><img src="https://api.codeclimate.com/v1/badges/e6e3f66332c91e5a4c0c/maintainability" alt="Maintainability"></a>
-  <img src="https://img.shields.io/circleci/build/github/chatwoot/chatwoot" alt="CircleCI Badge">
-    <a href="https://hub.docker.com/r/chatwoot/chatwoot/"><img src="https://img.shields.io/docker/pulls/chatwoot/chatwoot" alt="Docker Pull Badge"></a>
-  <a href="https://hub.docker.com/r/chatwoot/chatwoot/"><img src="https://img.shields.io/docker/cloud/build/chatwoot/chatwoot" alt="Docker Build Badge"></a>
-  <img src="https://img.shields.io/github/commit-activity/m/chatwoot/chatwoot" alt="Commits-per-month">
-  <a title="Crowdin" target="_self" href="https://chatwoot.crowdin.com/chatwoot"><img src="https://badges.crowdin.net/e/37ced7eba411064bd792feb3b7a28b16/localized.svg"></a>
-  <a href="https://discord.gg/cJXdrwS"><img src="https://img.shields.io/discord/647412545203994635" alt="Discord"></a>
-  <a href="https://status.chatwoot.com"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fchatwoot%2Fstatus%2Fmaster%2Fapi%2Fchatwoot%2Fuptime.json" alt="uptime"></a>
-  <a href="https://status.chatwoot.com"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fchatwoot%2Fstatus%2Fmaster%2Fapi%2Fchatwoot%2Fresponse-time.json" alt="response time"></a>
-  <a href="https://artifacthub.io/packages/helm/chatwoot/chatwoot"><img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/artifact-hub" alt="Artifact HUB"></a>
-</p>
-
-
-<p>
-  <a href="https://heroku.com/deploy?template=https://github.com/chatwoot/chatwoot/tree/master" alt="Deploy to Heroku">
-     <img width="150" alt="Deploy" src="https://www.herokucdn.com/deploy/button.svg"/>
-  </a>
-  <a href="https://marketplace.digitalocean.com/apps/chatwoot?refcode=f2238426a2a8" alt="Deploy to DigitalOcean">
-     <img width="200" alt="Deploy to DO" src="https://www.deploytodo.com/do-btn-blue.svg"/>
-  </a>
-</p>
-
-<img src="./.github/screenshots/dashboard.png#gh-light-mode-only" width="100%" alt="Chat dashboard dark mode"/>
-<img src="./.github/screenshots/dashboard-dark.png#gh-dark-mode-only" width="100%" alt="Chat dashboard"/>
+A ideia é você clonar, configurar variáveis de ambiente e subir o ambiente com poucos comandos.
 
 ---
 
-Chatwoot is the modern, open-source, and self-hosted customer support platform designed to help businesses deliver exceptional customer support experience. Built for scale and flexibility, Chatwoot gives you full control over your customer data while providing powerful tools to manage conversations across channels.
+## O que vem neste repositório
 
-### ✨ Captain – AI Agent for Support
+- Chatwoot (Web + Worker)
+- PostgreSQL (banco de dados)
+- Redis (filas/cache)
+- Persistência via volumes
+- Estrutura recomendada para produção (com boas práticas de configuração)
 
-Supercharge your support with Captain, Chatwoot’s AI agent. Captain helps automate responses, handle common queries, and reduce agent workload—ensuring customers get instant, accurate answers. With Captain, your team can focus on complex conversations while routine questions are resolved automatically. Read more about Captain [here](https://chwt.app/captain-docs).
+> Se você quiser adicionar Nginx/Traefik, SSL, backup automático e monitoramento, dá para acoplar facilmente.
 
-### 💬 Omnichannel Support Desk
+---
 
-Chatwoot centralizes all customer conversations into one powerful inbox, no matter where your customers reach out from. It supports live chat on your website, email, Facebook, Instagram, Twitter, WhatsApp, Telegram, Line, SMS etc.
+## Requisitos
 
-### 📚 Help center portal
+- Docker instalado
+- Docker Compose (v2+)
+- Servidor Linux recomendado (Ubuntu/Debian)
+- Porta(s) liberada(s) no firewall (ex.: 80/443 se usar proxy reverso)
 
-Publish help articles, FAQs, and guides through the built-in Help Center Portal. Enable customers to find answers on their own, reduce repetitive queries, and keep your support team focused on more complex issues.
+---
 
-### 🗂️ Other features
+## Instalação rápida
 
-#### Collaboration & Productivity
+1) Clone o repositório:
+```bash
+git clone https://github.com/SEU_USUARIO/SEU_REPO.git
+cd SEU_REPO
+````
 
-- Private Notes and @mentions for internal team discussions.
-- Labels to organize and categorize conversations.
-- Keyboard Shortcuts and a Command Bar for quick navigation.
-- Canned Responses to reply faster to frequently asked questions.
-- Auto-Assignment to route conversations based on agent availability.
-- Multi-lingual Support to serve customers in multiple languages.
-- Custom Views and Filters for better inbox organization.
-- Business Hours and Auto-Responders to manage response expectations.
-- Teams and Automation tools for scaling support workflows.
-- Agent Capacity Management to balance workload across the team.
+2. Copie o arquivo de ambiente:
 
-#### Customer Data & Segmentation
-- Contact Management with profiles and interaction history.
-- Contact Segments and Notes for targeted communication.
-- Campaigns to proactively engage customers.
-- Custom Attributes for storing additional customer data.
-- Pre-Chat Forms to collect user information before starting conversations.
+```bash
+cp .env.example .env
+```
 
-#### Integrations
-- Slack Integration to manage conversations directly from Slack.
-- Dialogflow Integration for chatbot automation.
-- Dashboard Apps to embed internal tools within Chatwoot.
-- Shopify Integration to view and manage customer orders right within Chatwoot.
-- Use Google Translate to translate messages from your customers in realtime.
-- Create and manage Linear tickets within Chatwoot.
+3. Edite o `.env` e configure pelo menos:
 
-#### Reports & Insights
-- Live View of ongoing conversations for real-time monitoring.
-- Conversation, Agent, Inbox, Label, and Team Reports for operational visibility.
-- CSAT Reports to measure customer satisfaction.
-- Downloadable Reports for offline analysis and reporting.
+* `FRONTEND_URL`
+* `SECRET_KEY_BASE`
+* `POSTGRES_PASSWORD`
+* `REDIS_PASSWORD` (se aplicável)
+* SMTP (para envio de e-mails) — opcional, mas recomendado
 
+4. Suba os containers:
 
-## Documentation
+```bash
+docker compose up -d
+```
 
-Detailed documentation is available at [chatwoot.com/help-center](https://www.chatwoot.com/help-center).
+5. Execute as migrações (primeira execução):
 
-## Translation process
+```bash
+docker compose exec chatwoot bundle exec rails db:chatwoot_prepare
+```
 
-The translation process for Chatwoot web and mobile app is managed at [https://translate.chatwoot.com](https://translate.chatwoot.com) using Crowdin. Please read the [translation guide](https://www.chatwoot.com/docs/contributing/translating-chatwoot-to-your-language) for contributing to Chatwoot.
+6. Acesse:
 
-## Branching model
+* Web: `http://SEU_DOMINIO_OU_IP`
 
-We use the [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model. The base branch is `develop`.
-If you are looking for a stable version, please use the `master` or tags labelled as `v1.x.x`.
+---
 
-## Deployment
+## Configuração do `.env`
 
-### Heroku one-click deploy
+Exemplo (ajuste para o seu ambiente):
 
-Deploying Chatwoot to Heroku is a breeze. It's as simple as clicking this button:
+* `FRONTEND_URL=https://seu-dominio.com`
+* `SECRET_KEY_BASE=gerar_uma_key_segura`
+* `POSTGRES_HOST=postgres`
+* `POSTGRES_USERNAME=postgres`
+* `POSTGRES_PASSWORD=uma_senha_forte`
+* `REDIS_URL=redis://redis:6379`
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/chatwoot/chatwoot/tree/master)
+### Gerando `SECRET_KEY_BASE`
 
-Follow this [link](https://www.chatwoot.com/docs/environment-variables) to understand setting the correct environment variables for the app to work with all the features. There might be breakages if you do not set the relevant environment variables.
+Você pode gerar uma chave forte usando:
 
+```bash
+openssl rand -hex 64
+```
 
-### DigitalOcean 1-Click Kubernetes deployment
+---
 
-Chatwoot now supports 1-Click deployment to DigitalOcean as a kubernetes app.
+## Volumes e persistência
 
-<a href="https://marketplace.digitalocean.com/apps/chatwoot?refcode=f2238426a2a8" alt="Deploy to DigitalOcean">
-  <img width="200" alt="Deploy to DO" src="https://www.deploytodo.com/do-btn-blue.svg"/>
-</a>
+Esta stack utiliza volumes para garantir persistência de:
 
-### Other deployment options
+* Banco de dados (PostgreSQL)
+* Redis (se necessário)
+* Uploads e arquivos do Chatwoot
 
-For other supported options, checkout our [deployment page](https://chatwoot.com/deploy).
+---
 
-## Security
+## Atualização
 
-Looking to report a vulnerability? Please refer our [SECURITY.md](./SECURITY.md) file.
+Para atualizar para a versão mais recente do Chatwoot:
 
-## Community
+```bash
+docker compose pull
+docker compose up -d
+docker compose exec chatwoot bundle exec rails db:migrate
+```
 
-If you need help or just want to hang out, come, say hi on our [Discord](https://discord.gg/cJXdrwS) server.
+---
 
-## Contributors
+## Segurança (recomendado)
 
-Thanks goes to all these [wonderful people](https://www.chatwoot.com/docs/contributors):
+Para uso em produção:
 
-<a href="https://github.com/chatwoot/chatwoot/graphs/contributors"><img src="https://opencollective.com/chatwoot/contributors.svg?width=890&button=false" /></a>
+* Use **proxy reverso** (Nginx/Traefik/Caddy) com **SSL**
+* Configure **SMTP** para envio confiável de e-mails
+* Use senhas fortes e variáveis seguras
+* Restrinja acesso às portas internas (Postgres/Redis)
+* Configure backups do Postgres
 
+---
 
-*Chatwoot* &copy; 2017-2025, Chatwoot Inc - Released under the MIT License.
+## Troubleshooting
+
+### Ver logs
+
+```bash
+docker compose logs -f
+```
+
+### Reiniciar serviços
+
+```bash
+docker compose restart
+```
+
+### Recriar do zero (cuidado: apaga volumes)
+
+```bash
+docker compose down -v
+docker compose up -d
+```
+
+---
+
+## Licença e créditos
+
+* Chatwoot é um projeto open source mantido pela comunidade e pela equipe do Chatwoot.
+* Este repositório organiza uma stack de deploy e não substitui a licença/termos do projeto original.
+
+---
+
+## Suporte
+
+Se você encontrar algum problema:
+
+* Abra uma **Issue** no repositório com logs e contexto do ambiente (SO, Docker/Compose, etc.).
+* Descreva o passo a passo para reproduzir.
+
+```
+
+Se você me mandar:
+1) o **conteúdo do seu `docker-compose.yml`** (ou sua stack),  
+2) se vai usar **Traefik/Nginx** e **domínio**,  
+eu adapto o README para ficar 100% fiel ao seu projeto (com comandos exatos, variáveis reais e seção de deploy em produção).
+```
